@@ -8,7 +8,7 @@ service-account.json
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.ear
 
