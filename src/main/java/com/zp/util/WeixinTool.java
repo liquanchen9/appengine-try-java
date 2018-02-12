@@ -30,12 +30,9 @@ import javax.imageio.ImageIO;
 import javax.net.ssl.HttpsURLConnection;
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
 
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
@@ -49,6 +46,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 
 public class WeixinTool {
 	public static String webAppBaseDir = "";
@@ -66,6 +67,9 @@ public class WeixinTool {
 		}
 		gson = new Gson();
 		ScriptEngineManager manager = new ScriptEngineManager();
+		for (ScriptEngineFactory f : manager.getEngineFactories()) {
+			System.out.println("ScriptEngineManager  has :: "+f.getEngineName());
+		}
 		jsEngine = manager.getEngineByName("javascript");
 		jsScope = jsEngine.createBindings();
 		try {
