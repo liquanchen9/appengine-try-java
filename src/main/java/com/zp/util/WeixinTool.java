@@ -45,6 +45,7 @@ import org.jsoup.parser.Parser;
 import org.openqa.selenium.io.IOUtils;
 
 import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.urlfetch.FetchOptions;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -220,7 +221,6 @@ public class WeixinTool {
 	private static JsonObject getJsonResp() throws IOException {
 		JsonObject r = null;
 		try {
-			conn.timeout(0);
 			String body = conn.execute().body();
 			System.out.println(body);
 			r = gson.fromJson(body, JsonObject.class);
