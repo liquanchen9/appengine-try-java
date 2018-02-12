@@ -83,7 +83,7 @@
 		<artifactId>nashorn</artifactId>
 		<version>1.7.8</version>
 		<scope>system</scope>
-		<systemPath>${project.basedir}/src/main/webapp/mylib/nashorn.jar</systemPath>
+		<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/nashorn.jar</systemPath>
   	</dependency>
 
     <!-- Test Dependencies -->
