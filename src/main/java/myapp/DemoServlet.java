@@ -17,15 +17,48 @@
 package myapp;
 
 import java.io.IOException;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DemoServlet extends HttpServlet {
+import com.zp.util.WeixinTool;
+
+public class DemoServlet extends HttpServlet implements Runnable {
+	
+	private Thread weixinThread; 
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws IOException {
     resp.setContentType("text/plain");
-    resp.getWriter().println("{ \"name\": \"World\" }");
+    String cmd = req.getParameter("cmd");
+    if(cmd==null||cmd.trim().length()==0) {
+    	resp.getWriter().println("{ \"name\": \"World\" }");
+    }else if(cmd.equals("restart")) {
+    	weixinThread.interrupt();
+    	weixinThread = new Thread(this);
+		weixinThread.start();
+    }
   }
+  
+  	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		WeixinTool.webAppBaseDir = config.getServletContext().getRealPath("");
+		weixinThread = new Thread(this);
+		weixinThread.start();
+	}
+
+	@Override
+	public void run() {
+		try {
+			WeixinTool.main(null);
+		} catch (InterruptedException e) {
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
