@@ -95,7 +95,11 @@ public class WeixinTool {
 	public static void main(String[] args) throws Exception {
 		Map<String, Object> loginData = readData();
 		do{
-			syncMsg(loginData,System.currentTimeMillis());
+			try {
+				syncMsg(loginData,System.currentTimeMillis());
+			} catch (NullPointerException e) {
+				System.out.println("ignore null!!");
+			}
 		}while(true);
 	}
 
@@ -142,7 +146,6 @@ public class WeixinTool {
 				deviceId +
 				"\"}}");
 		JsonObject initData = getJsonResp();
-		System.out.println(initData);
 		String myUserName = initData.get("User").getAsJsonObject().get("UserName").getAsString();
 		
 		String targetUserName = "";
