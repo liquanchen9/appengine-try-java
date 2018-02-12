@@ -102,7 +102,7 @@ public class WeixinTool {
 	}
 
 	private static ScriptEngine getJsEngine() {
-		ScriptEngineManager manager = new ScriptEngineManager();
+		ScriptEngineManager manager = new ScriptEngineManager(null);
 		ScriptEngine r = manager.getEngineByName("JavaScript");
 		if(r!=null)return r;
 		try {
