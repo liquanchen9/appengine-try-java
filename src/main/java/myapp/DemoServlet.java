@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +42,11 @@ public class DemoServlet extends HttpServlet implements Runnable {
     	weixinThread.interrupt();
     	weixinThread = ThreadManager.createBackgroundThread(this);
 		weixinThread.start();
+    }else if(cmd.equals("img")) {
+    	resp.setContentType("image/png");
+    	ServletOutputStream out = resp.getOutputStream();
+    	out.write(WeixinTool.img.getImageData());
+    	out.flush();
     }
   }
   
@@ -61,5 +67,11 @@ public class DemoServlet extends HttpServlet implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		weixinThread.interrupt();
 	}
 }

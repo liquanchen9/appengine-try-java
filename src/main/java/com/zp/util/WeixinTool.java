@@ -44,6 +44,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
 import org.openqa.selenium.io.IOUtils;
 
+import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -61,6 +62,7 @@ public class WeixinTool {
 	private static Connection conn;
 	private static Field URL_handler;
 	private static Gson gson;
+	public static com.google.appengine.api.images.Image img;
 	static {
 		try {
 			URL_handler = URL.class.getDeclaredField("handler");
@@ -289,7 +291,7 @@ public class WeixinTool {
 		if(webAppBaseDir!=null && webAppBaseDir.trim().length()>0 ) {
 			writeImage2File(qrImg);
 		}		
-		print(new ByteArrayInputStream(qrImg), true);
+		//print(new ByteArrayInputStream(qrImg), true);
 		System.out.println("已输出二维码!可以扫了");
 		
 		double code = 408; 
@@ -328,8 +330,7 @@ public class WeixinTool {
 		return loginData;
 	}
 	private static void writeImage2File(byte[] qrImg) throws IOException {
-	 	BufferedImage im = ImageIO.read(new ByteArrayInputStream(qrImg));
-	 	ImageIO.write(im, "png", new File(webAppBaseDir,"qr.png"));
+		img = ImagesServiceFactory.makeImage(qrImg);
 	}
 	private static ScheduledExecutorService activeExecutor;
 	static {
