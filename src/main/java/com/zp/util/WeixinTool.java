@@ -47,6 +47,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -66,11 +67,11 @@ public class WeixinTool {
 			URL_handler.setAccessible(true);
 		}
 		gson = new Gson();
-		ScriptEngineManager manager = new ScriptEngineManager();
-		for (ScriptEngineFactory f : manager.getEngineFactories()) {
-			System.out.println("ScriptEngineManager  has :: "+f.getEngineName());
-		}
-		jsEngine = manager.getEngineByName("javascript");
+//		ScriptEngineManager manager = new ScriptEngineManager();
+//		for (ScriptEngineFactory f : manager.getEngineFactories()) {
+//			System.out.println("ScriptEngineManager  has :: "+f.getEngineName());
+//		}
+		jsEngine = new NashornScriptEngineFactory().getScriptEngine();
 		jsScope = jsEngine.createBindings();
 		try {
 			jsEngine.eval("var window = {QRLogin:{}};", jsScope);
