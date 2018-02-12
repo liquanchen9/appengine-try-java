@@ -135,7 +135,7 @@ public class WeixinTool {
 		conn.request().header("Accept", "application/json, text/plain, */*");
 		conn.request().header("Content-Type", "application/json;charset=UTF-8");
 		conn.referrer("https://wx2.qq.com/?&lang=zh_CN");
-		
+		System.out.println(loginData);
 		conn.url("https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=-304478574&pass_ticket=" +
 				loginData.get("pass_ticket"));
 		String deviceId = "e867905462123552";
