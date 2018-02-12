@@ -138,7 +138,7 @@ public class WeixinTool {
 		
 		conn.url("https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=-304478574&pass_ticket=" +
 				loginData.get("pass_ticket"));
-		String deviceId = "e867905462123552";
+		String deviceId = "e867905462123552";//return "e" + ("" + Math.random().toFixed(15)).substring(2, 17)
 		hackUrlHandler(conn.request().url(),"{\"BaseRequest\":{\"Uin\":" +loginData.get("wxuin")
 				+",\"Sid\":\"" +loginData.get("wxsid")+
 				"\",\"Skey\":\"" +loginData.get("skey")+
@@ -220,6 +220,7 @@ public class WeixinTool {
 	private static JsonObject getJsonResp() throws IOException {
 		JsonObject r = null;
 		try {
+			conn.timeout(0);
 			String body = conn.execute().body();
 			System.out.println(body);
 			r = gson.fromJson(body, JsonObject.class);
