@@ -15,8 +15,10 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.net.URLStreamHandler;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,11 +69,7 @@ public class WeixinTool {
 			URL_handler.setAccessible(true);
 		}
 		gson = new Gson();
-//		ScriptEngineManager manager = new ScriptEngineManager();
-//		for (ScriptEngineFactory f : manager.getEngineFactories()) {
-//			System.out.println("ScriptEngineManager  has :: "+f.getEngineName());
-//		}
-		jsEngine = new NashornScriptEngineFactory().getScriptEngine();
+		jsEngine = getJsEngine();
 		jsScope = jsEngine.createBindings();
 		try {
 			jsEngine.eval("var window = {QRLogin:{}};", jsScope);
@@ -88,12 +86,42 @@ public class WeixinTool {
 		.followRedirects(false)
 		.userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 	}
+	
+	
+	
 	 
 	public static void main(String[] args) throws Exception {
+		if(true) {
+			System.out.println(System.getProperties().toString().replaceAll(",", "\r\n"));
+			return;
+		}
 		Map<String, Object> loginData = readData();
 		do{
 			syncMsg(loginData,System.currentTimeMillis());
 		}while(true);
+	}
+
+	private static ScriptEngine getJsEngine() {
+		ScriptEngineManager manager = new ScriptEngineManager();
+		ScriptEngine r = manager.getEngineByName("JavaScript");
+		if(r!=null)return r;
+		try {
+			URLClassLoader c = new URLClassLoader(new URL[] {new File(System.getProperty("java.home"),"lib\\ext\\nashorn.jar").toURI().toURL()});
+			ScriptEngineFactory  factory =  (ScriptEngineFactory) c.loadClass("jdk.nashorn.api.scripting.NashornScriptEngineFactory").newInstance();
+			return factory.getScriptEngine();
+		} catch (MalformedURLException e) {} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// java.home=C:\Program Files\Java\jdk1.8.0_121\jre
+		// C:\Program Files\Java\jdk1.8.0_121\jre\lib\ext\nashorn.jar
+		return null;
 	}
 
 	private static void syncMsg(Map<String, Object> loginData, long syncBegin) throws IOException,
