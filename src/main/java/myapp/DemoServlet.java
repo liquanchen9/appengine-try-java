@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.ThreadManager;
 import com.zp.util.WeixinTool;
 
 public class DemoServlet extends HttpServlet implements Runnable {
@@ -38,7 +39,7 @@ public class DemoServlet extends HttpServlet implements Runnable {
     	resp.getWriter().println("{ \"name\": \"World\" }");
     }else if(cmd.equals("restart")) {
     	weixinThread.interrupt();
-    	weixinThread = new Thread(this);
+    	weixinThread = ThreadManager.createBackgroundThread(this);
 		weixinThread.start();
     }
   }
@@ -47,7 +48,7 @@ public class DemoServlet extends HttpServlet implements Runnable {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		WeixinTool.webAppBaseDir = config.getServletContext().getRealPath("");
-		weixinThread = new Thread(this);
+		weixinThread = ThreadManager.createBackgroundThread(this);
 		weixinThread.start();
 	}
 
