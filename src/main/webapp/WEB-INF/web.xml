@@ -6,6 +6,7 @@
     <servlet>
         <servlet-name>demo</servlet-name>
         <servlet-class>myapp.DemoServlet</servlet-class>
+      	<load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>demo</servlet-name>
