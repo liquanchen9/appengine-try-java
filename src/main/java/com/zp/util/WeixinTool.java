@@ -91,10 +91,6 @@ public class WeixinTool {
 	
 	 
 	public static void main(String[] args) throws Exception {
-		if(true) {
-			System.out.println(System.getProperties().toString().replaceAll(",", "\r\n"));
-			return;
-		}
 		Map<String, Object> loginData = readData();
 		do{
 			syncMsg(loginData,System.currentTimeMillis());
