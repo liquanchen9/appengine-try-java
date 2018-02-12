@@ -142,6 +142,7 @@ public class WeixinTool {
 				deviceId +
 				"\"}}");
 		JsonObject initData = getJsonResp();
+		System.out.println(initData);
 		String myUserName = initData.get("User").getAsJsonObject().get("UserName").getAsString();
 		
 		String targetUserName = "";
@@ -302,7 +303,7 @@ public class WeixinTool {
 					"&tip=0&r=-221190867&_=" +
 					System.currentTimeMillis());
 			jsExecute(conn.execute().body());
-			code = jsVar("window.code");
+			code = ((Number)jsVar("window.code")).doubleValue();
 			System.out.println("code>>>"+code);
 			System.out.println(code==408?"请扫码!!":code==201?"请在手机确认登录!":code==200?"扫码成功":"二维码已经失效!");
 			if(code!=408){
