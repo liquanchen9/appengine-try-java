@@ -44,14 +44,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
 import org.openqa.selenium.io.IOUtils;
 
-import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.urlfetch.FetchOptions;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -63,7 +60,7 @@ public class WeixinTool {
 	private static Connection conn;
 	private static Field URL_handler;
 	private static Gson gson;
-	public static com.google.appengine.api.images.Image img;
+	public static byte[] img;
 	static {
 		try {
 			URL_handler = URL.class.getDeclaredField("handler");
@@ -93,7 +90,7 @@ public class WeixinTool {
 	
 	
 	 
-	public static void main(String[] args) throws Exception {
+	public static void main2(String[] args) throws Exception {
 		Map<String, Object> loginData = readData();
 		do{
 			try {
@@ -222,7 +219,7 @@ public class WeixinTool {
 		JsonObject r = null;
 		try {
 			String body = conn.execute().body();
-			System.out.println(body);
+			//System.out.println(body);
 			r = gson.fromJson(body, JsonObject.class);
 		}
 		catch (Exception e) {
@@ -295,9 +292,9 @@ public class WeixinTool {
 	 
 		String qrImgUrl = "https://login.weixin.qq.com/qrcode/"+jsVar("window.QRLogin.uuid");
 		byte[] qrImg = conn.url(qrImgUrl).execute().bodyAsBytes();
-		if(webAppBaseDir!=null && webAppBaseDir.trim().length()>0 ) {
+//		if(webAppBaseDir!=null && webAppBaseDir.trim().length()>0 ) {
 			writeImage2File(qrImg);
-		}		
+//		}		
 		//print(new ByteArrayInputStream(qrImg), true);
 		System.out.println("已输出二维码!可以扫了");
 		
@@ -337,7 +334,7 @@ public class WeixinTool {
 		return loginData;
 	}
 	private static void writeImage2File(byte[] qrImg) throws IOException {
-		img = ImagesServiceFactory.makeImage(qrImg);
+		img =  (qrImg);
 	}
 	private static ScheduledExecutorService activeExecutor;
 	static {
