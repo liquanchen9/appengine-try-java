@@ -56,7 +56,7 @@ import net.sf.cglib.proxy.MethodProxy;
 public class WeixinTool {
 	public static String webAppBaseDir = "";
 	private static Bindings jsScope;
-	private static ScriptEngine jsEngine ;
+	private static ScriptEngine jsEngine ; 
 	private static Connection conn;
 	private static Field URL_handler;
 	private static Gson gson;

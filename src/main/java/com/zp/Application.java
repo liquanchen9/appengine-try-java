@@ -21,7 +21,7 @@ import com.zp.util.WeixinTool;
 @SpringBootApplication(scanBasePackages = "com.zp")
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 @EnableAsync
-@EnableScheduling
+@EnableScheduling 
 @Controller
 public class Application {
 	
